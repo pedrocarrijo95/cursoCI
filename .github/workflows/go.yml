@@ -47,7 +47,13 @@ jobs:
     - name: Build
       run: go build -v main.go
 
-  Deploy_Oracle:
+
+  docker:
+    needs: build
+    uses: ./.github/workflows/Docker.yml
+    secrets: inherit
+    
+  deploy_Oracle:
    needs: build
    uses: ./.github/workflows/Oracle.yml
    secrets: inherit
