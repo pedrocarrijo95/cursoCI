@@ -32,11 +32,11 @@ jobs:
              key: ${{ secrets.SSH_PRIVATE_KEY }}
              port: 22
              script: |
-               export HOST= ${{ secrets.DB_HOST }}
-               export USER= ${{ secrets.DB_USER }}
-               export PASSWORD= ${{ secrets.DB_PASSWORD }}
-               export DBNAME= ${{ secrets.DB_NAME }}
-               export DBPORT= ${{ secrets.DB_PORT }}
+               export HOST= 10.0.1.119
+               export USER= opc
+               export PASSWORD= Oracle&124
+               export DBNAME= postgresql
+               export DBPORT= 5432
                export PORT= 8000
                chmod +x main
                nohup ./main &
