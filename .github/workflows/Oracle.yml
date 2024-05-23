@@ -24,6 +24,17 @@ jobs:
              TARGET: /home/${{ secrets.REMOTE_USER }}
              EXCLUDE: "postgre-data"
 
+         - name: Download artefato
+           uses: actions/download-artifact@v3
+           with:
+             name: random-tag
+
+         - name: Ler tag aleatoria
+           id: read_random_tag
+           run: |
+             RANDOM_TAG=$(cat random_tag.txt)
+             echo "RANDOM_TAG=$RANDOM_TAG" >> $GITHUB_ENV
+
          - name: executing remote ssh commands using password
            uses: appleboy/ssh-action@v1.0.3
            with:
@@ -32,13 +43,23 @@ jobs:
              key: ${{ secrets.SSH_PRIVATE_KEY }}
              port: 22
              script: |
-               export HOST=${{ secrets.DB_HOST }}
-               export USER=${{ secrets.DB_USER }}
-               export PASSWORD=${{ secrets.DB_PASSWORD }}
-               export DBNAME=${{ secrets.DB_NAME }}
-               export DBPORT=${{ secrets.DB_PORT }}
-               export PORT=8000
-               chmod +x main
-               nohup ./main &
-               nohup .main > nohup.out 2> nohup.err < /dev/null &
+               export RANDOM_TAG=${{ env.RANDOM_TAG }}
+
+        # - name: executing remote ssh commands using password
+         #  uses: appleboy/ssh-action@v1.0.3
+          # with:
+           #  host: ${{ secrets.REMOTE_HOST }}
+            # username: ${{ secrets.REMOTE_USER }}
+             #key: ${{ secrets.SSH_PRIVATE_KEY }}
+             #port: 22
+             #script: |
+               #export HOST=${{ secrets.DB_HOST }}
+               #export USER=${{ secrets.DB_USER }}
+               #export PASSWORD=${{ secrets.DB_PASSWORD }}
+               #export DBNAME=${{ secrets.DB_NAME }}
+               #export DBPORT=${{ secrets.DB_PORT }}
+               #export PORT=8000
+               #chmod +x main
+               #nohup ./main &
+               #nohup .main > nohup.out 2> nohup.err < /dev/null &
                
