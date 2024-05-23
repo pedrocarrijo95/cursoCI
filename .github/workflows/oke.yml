@@ -1,0 +1,31 @@
+name: Entrega Contínua
+
+on:
+ workflow_call:
+
+jobs:
+
+  OracleCloud:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v4
+         - name: Download artefato
+           uses: actions/download-artifact@v3
+           with:
+             name: random-tag
+
+         - name: Ler tag aleatoria
+           id: read_random_tag
+           run: |
+             RANDOM_TAG=$(cat random_tag.txt)
+             echo "RANDOM_TAG=$RANDOM_TAG" >> $GITHUB_ENV
+
+         - name: deploy to cluster
+           uses: bwvolleyball/k8s-toolkit@v1.0.0
+           with: # defaults to latest kubectl & helm binary versions
+             config: ${{ secrets.KUBE_CONFIG_DATA }}
+             kubectl_version: v1.21.5
+            # After it's been configured, you can now freely use kubectl & helm commands the rest of the job.
+            # This could also be used for multi-cluster deployment, as long as your provided kube config has all required clusters.
+         - name: Check kubectl version
+           run: kubectl version
