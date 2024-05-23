@@ -53,8 +53,8 @@ jobs:
     uses: ./.github/workflows/Docker.yml
     secrets: inherit
     
-  deploy_Oracle:
+  deploy_OKE:
    needs: docker
-   uses: ./.github/workflows/Oracle.yml
+   uses: ./.github/workflows/oke.yml
    secrets: inherit
  
