@@ -7,6 +7,12 @@ jobs:
 
   OracleCloud:
       runs-on: ubuntu-latest
+      env:
+         OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+         OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+         OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+         OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+         OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
       steps:
          - uses: actions/checkout@v4
          - name: Download artefato
@@ -20,12 +26,21 @@ jobs:
              RANDOM_TAG=$(cat random_tag.txt)
              echo "RANDOM_TAG=$RANDOM_TAG" >> $GITHUB_ENV
 
-         - name: deploy to cluster
-           uses: bwvolleyball/k8s-toolkit@v1.0.0
-           with: # defaults to latest kubectl & helm binary versions
-             config: ${{ secrets.KUBE_CONFIG_DATA }}
-             kubectl_version: v1.29.1
+         - name: Configure Kubectl
+           uses: oracle-actions/configure-kubectl-oke@v1.3.2
+           id: test-configure-kubectl-oke-action
+           with:
+             cluster: ${{ secrets.OKE_CLUSTER_OCID }}
+   
+         - name: Run Kubectl
+           run: kubectl get nodes -A
+           
+        # - name: deploy to cluster
+          # uses: bwvolleyball/k8s-toolkit@v1.0.0
+          # with: # defaults to latest kubectl & helm binary versions
+            # config: ${{ secrets.KUBE_CONFIG_DATA }}
+             #kubectl_version: v1.29.1
             # After it's been configured, you can now freely use kubectl & helm commands the rest of the job.
             # This could also be used for multi-cluster deployment, as long as your provided kube config has all required clusters.
-         - name: Check kubectl version
-           run: kubectl version
+         #- name: Check kubectl version
+          # run: kubectl version
