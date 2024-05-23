@@ -33,7 +33,7 @@ jobs:
              cluster: ${{ secrets.OKE_CLUSTER_OCID }}
    
          - name: Run Kubectl
-           run: kubectl get nodes -A
+           run: kubectl version
            
         # - name: deploy to cluster
           # uses: bwvolleyball/k8s-toolkit@v1.0.0
