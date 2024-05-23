@@ -54,7 +54,7 @@ jobs:
     secrets: inherit
     
   deploy_Oracle:
-   needs: build
+   needs: docker
    uses: ./.github/workflows/Oracle.yml
    secrets: inherit
  
