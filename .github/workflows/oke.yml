@@ -24,7 +24,7 @@ jobs:
            uses: bwvolleyball/k8s-toolkit@v1.0.0
            with: # defaults to latest kubectl & helm binary versions
              config: ${{ secrets.KUBE_CONFIG_DATA }}
-             kubectl_version: v1.21.5
+             kubectl_version: v1.29.1
             # After it's been configured, you can now freely use kubectl & helm commands the rest of the job.
             # This could also be used for multi-cluster deployment, as long as your provided kube config has all required clusters.
          - name: Check kubectl version
